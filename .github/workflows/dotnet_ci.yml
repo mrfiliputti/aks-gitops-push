@@ -26,10 +26,10 @@ jobs:
         dotnet-version: 8.0.x
         
     - name: Restore dependencies
-      run: dotnet restore src/ffwebapp/ffwebapp.csproj
+      run: dotnet restore ffwebapp/ffwebapp.csproj
       
     - name: Build
-      run: dotnet build src/ffwebapp/ffwebapp.csproj --no-restore
+      run: dotnet build ffwebapp/ffwebapp.csproj --no-restore
       
     - name: Test
-      run: dotnet test src/ffwebapp-test/ffwebapp.tests.csproj --no-build --verbosity normal
+      run: dotnet test ffwebapp-test/ffwebapp.tests.csproj --no-build --verbosity normal
