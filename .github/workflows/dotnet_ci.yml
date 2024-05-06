@@ -32,4 +32,4 @@ jobs:
       run: dotnet build ffwebapp/ffwebapp.csproj --no-restore
             
     - name: Test
-      run: dotnet test ffwebapp-test/ffwebapp.tests.csproj --no-build --verbosity normal
+      run: dotnet test ffwebapp-test/ffwebapp.tests.csproj
