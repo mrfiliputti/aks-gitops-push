@@ -12,7 +12,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./src/ffwebapp-test
+    working-directory: ./src/ffwebapp
 
 jobs:
   build:
