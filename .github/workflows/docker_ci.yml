@@ -20,8 +20,8 @@ jobs:
 
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # Checks out the repository this file is in
+      - uses: actions/checkout@v4
 
       - name: Azure Login
         uses: Azure/login@v1
