@@ -31,5 +31,8 @@ jobs:
     - name: Build
       run: dotnet build ffwebapp/ffwebapp.csproj --no-restore
       
+    - name: Restore dependencies Test
+      run: dotnet restore ffwebapp-test/ffwebapp.tests.csproj
+      
     - name: Test
       run: dotnet test ffwebapp-test/ffwebapp.tests.csproj --no-build --verbosity normal
