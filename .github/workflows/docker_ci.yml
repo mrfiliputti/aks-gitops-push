@@ -28,7 +28,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: src/ffwebapp
-          file: /src/ffwebapp/Dockerfile
+          file: src/ffwebapp/Dockerfile
           tags: |
             ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
           push: true
