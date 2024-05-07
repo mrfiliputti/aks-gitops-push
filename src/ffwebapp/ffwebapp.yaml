@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ffwebapp-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ffwebapp
+  template:
+    metadata:
+      labels:
+        app: ffwebapp
+    spec:
+      containers:
+      - name: ffwebapp
+        image: crffwebappdev.azurecr.io/ffwebapp:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ffwebapp-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+  selector:
+    app: ffwebapp

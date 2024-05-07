@@ -6,11 +6,12 @@ on:
       - main
 
 env:
+  RESOURCE_GROUP: "rg_aksgitopspush"
   AZURE_CONTAINER_REGISTRY: "crffwebappdev"
   AZURE_CONTAINER_REGISTRY_URL: "crffwebappdev.azurecr.io"
-  CONTAINER_NAME: "ffwebapp"
-  RESOURCE_GROUP: "rg_aksgitopspush"
-
+  CONTAINER_NAME: "ffwebapp"  
+  CLUSTER_NAME: "aks-ffwebapp"
+  DEPLOYMENT_MANIFEST_PATH: "src/ffwebapp/ffwebapp.yaml"
 
 jobs:
   build-image:
@@ -36,3 +37,40 @@ jobs:
           tags: |
             ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
           push: true
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [buildImage]
+    steps:
+      # Checks out the repository this file is in
+      - uses: actions/checkout@v4
+
+      # Logs in with your Azure credentials
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Use kubelogin to configure your kubeconfig for Azure auth
+      - name: Set up kubelogin for non-interactive login
+        uses: azure/use-kubelogin@v1
+        with:
+          kubelogin-version: 'v0.0.25'
+
+      # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+      - name: Get K8s context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP }}
+          cluster-name: ${{ env.CLUSTER_NAME }}
+          admin: 'false'
+          use-kubelogin: 'true'
+
+      # Deploys application based on given manifest file
+      - name: Deploys application
+        uses: Azure/k8s-deploy@v4
+        with:
+          action: deploy
+          manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
+          images: |
+            ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
