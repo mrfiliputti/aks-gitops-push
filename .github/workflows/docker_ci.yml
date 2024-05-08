@@ -1,16 +1,23 @@
-name: Docker CI
+name: ffwebapp-ci-cd
 
 on:
-  push:
-    branches:
-      - main
+  #push:
+  #  branches:
+  #    - feature/*
+  #    - release/*
+  #    - develop
+  #pull_request:
+  #  branches:
+  #    - develop
+  #    - main
+  workflow_dispatch: 
 
 env:
   RESOURCE_GROUP: "rg_aksgitopspush"
   AZURE_CONTAINER_REGISTRY: "crffwebappdev"
   AZURE_CONTAINER_REGISTRY_URL: "crffwebappdev.azurecr.io"
   CONTAINER_NAME: "ffwebapp"  
-  CLUSTER_NAME: "aks-ffwebapp"
+  CLUSTER_NAME: "aksgitopspush"
   DEPLOYMENT_MANIFEST_PATH: "src/ffwebapp/ffwebapp.yaml"
 
 jobs:
